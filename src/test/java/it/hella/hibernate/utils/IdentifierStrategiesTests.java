@@ -27,16 +27,16 @@ import it.hella.model.ThreadedBean;
 public class IdentifierStrategiesTests extends BaseTests {
 
 	/** The bean number per thread. */
-	private static int BEAN_NUMBER_PER_THREAD = 1000;
+	private static final int BEAN_NUMBER_PER_THREAD = 1000;
 
 	/** The thread number. */
-	private static int THREAD_NUMBER = 50;
+	private static final int THREAD_NUMBER = 50;
 
 	/** The thread number. */
-	private static int BATCH_CHASH_SIZE = 50;
+	private static final int BATCH_CASH_SIZE = 50;
 
 	/** The lock. */
-	private static ReentrantLock lock = new ReentrantLock();
+	private static final ReentrantLock lock = new ReentrantLock();
 
 	/**
 	 * Sequence insert.
@@ -117,7 +117,7 @@ public class IdentifierStrategiesTests extends BaseTests {
 		List<Long> ret = new ArrayList<Long>();
 		for (int i = 0; i < BEAN_NUMBER_PER_THREAD; i++) {
 			ret.add(createAndSaveBean(threadId, clazz));
-			if (i % BATCH_CHASH_SIZE == 0) {
+			if (i % BATCH_CASH_SIZE == 0) {
 				session.flush();
 				session.clear();
 			}
