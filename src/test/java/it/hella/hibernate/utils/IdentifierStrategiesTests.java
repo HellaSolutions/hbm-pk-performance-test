@@ -26,23 +26,28 @@ import it.hella.model.ThreadedBean;
  */
 public class IdentifierStrategiesTests extends BaseTests {
 
-	/** The bean number per thread. */
+	/** The number of insert operations per thread. */
 	private static final int BEAN_NUMBER_PER_THREAD = 1000;
 
-	/** The thread number. */
+	/** The numbe of threads. */
 	private static final int THREAD_NUMBER = 50;
 
-	/** The thread number. */
+	/** The maximum number of insert operations before session flush. */
 	private static final int BATCH_CASH_SIZE = 50;
 
-	/** The lock. */
+	/**
+	 * A reentrant lock guards against multithreading interrupts inside the
+	 * timing evaluation code section.
+	 * 
+	 * @see IdentifierStrategiesTests#createAndSaveBean
+	 */
 	private static final ReentrantLock lock = new ReentrantLock();
 
 	/**
 	 * Sequence insert.
 	 *
 	 * @throws Exception
-	 *             the exception
+	 *             any exception
 	 */
 	@Test
 	public void sequenceInsert() throws Exception {
@@ -53,7 +58,7 @@ public class IdentifierStrategiesTests extends BaseTests {
 	 * Identity insert.
 	 *
 	 * @throws Exception
-	 *             the exception
+	 *             any exception
 	 */
 	@Test
 	public void identityInsert() throws Exception {
@@ -64,7 +69,7 @@ public class IdentifierStrategiesTests extends BaseTests {
 	 * Hi lo insert.
 	 *
 	 * @throws Exception
-	 *             the exception
+	 *             any exception
 	 */
 	@Test
 	public void HiLoInsert() throws Exception {
@@ -75,12 +80,12 @@ public class IdentifierStrategiesTests extends BaseTests {
 	 * Creates the and save bean.
 	 *
 	 * @param threadId
-	 *            the thread id
+	 *            the id of the thread
 	 * @param clazz
-	 *            the clazz
-	 * @return the long
+	 *            the ThreadedBean implementation
+	 * @return the primary key inserted
 	 * @throws Exception
-	 *             the exception
+	 *             any exception
 	 */
 	private Long createAndSaveBean(int threadId, Class<? extends ThreadedBean> clazz) throws Exception {
 
@@ -103,10 +108,10 @@ public class IdentifierStrategiesTests extends BaseTests {
 	 * Thread transaction.
 	 *
 	 * @param threadId
-	 *            the thread id
+	 *            the id of the thread
 	 * @param clazz
-	 *            the clazz
-	 * @return the list
+	 *            the ThreadedBean implementation
+	 * @return the list of primary key values inserted
 	 * @throws Exception
 	 *             the exception
 	 */
@@ -134,10 +139,10 @@ public class IdentifierStrategiesTests extends BaseTests {
 	 * Multithreaded insert.
 	 *
 	 * @param clazz
-	 *            the clazz
-	 * @return the list
+	 *            the ThreadedBean implementation
+	 * @return the list of primary key values inserted per Future
 	 * @throws Exception
-	 *             the exception
+	 *             any exception
 	 */
 	public List<Future<List<Long>>> multithreadedInsert(Class<? extends ThreadedBean> clazz) throws Exception {
 
