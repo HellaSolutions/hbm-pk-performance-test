@@ -12,7 +12,6 @@ import it.hella.model.HiLoIdentifiedBean;
 import it.hella.model.IdentityIdentifiedBean;
 import it.hella.model.SequenceIdentifiedBean;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class HibernateUtil.
  * 

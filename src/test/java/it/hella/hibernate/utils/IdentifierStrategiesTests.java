@@ -36,8 +36,8 @@ public class IdentifierStrategiesTests extends BaseTests {
 	private static final int BATCH_CASH_SIZE = 50;
 
 	/**
-	 * A reentrant lock guards against multithreading interrupts inside the
-	 * timing evaluation code section.
+	 * A reentrant lock that guards the timing evaluation code section. To avoid
+	 * noise due to multithreading interrupts.
 	 * 
 	 * @see IdentifierStrategiesTests#createAndSaveBean
 	 */

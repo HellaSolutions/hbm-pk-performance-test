@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class IdentityIdentifiedBean.
  */

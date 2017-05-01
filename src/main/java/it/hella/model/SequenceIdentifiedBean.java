@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class SequenceIdentifiedBean.
  */

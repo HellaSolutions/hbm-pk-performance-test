@@ -11,7 +11,6 @@ import org.junit.BeforeClass;
 
 import it.hella.model.ThreadedBean;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class BaseTests.
  * 

@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class HiLoIdentifiedBean.
  */

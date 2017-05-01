@@ -1,15 +1,15 @@
 package it.hella.model;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Interface ThreadedBean.
  */
 public interface ThreadedBean {
-	
+
 	/**
 	 * Sets the thread number.
 	 *
-	 * @param threadId the new thread number
+	 * @param threadId
+	 *            the new thread number
 	 */
 	void setThreadNumber(int threadId);
 
