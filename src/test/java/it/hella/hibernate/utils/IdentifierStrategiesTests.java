@@ -96,7 +96,7 @@ public class IdentifierStrategiesTests extends BaseTests {
 			Stopwatch stopwatch = Stopwatch.createStarted();
 			sessionFactory.getCurrentSession().save(idBean1);
 			stopwatch.stop();
-			addTimeElapsed(clazz, stopwatch.elapsed(TimeUnit.NANOSECONDS));
+			addTimeElapsed(clazz, stopwatch.stop().elapsed(TimeUnit.NANOSECONDS));
 		} finally {
 			lock.unlock();
 		}
