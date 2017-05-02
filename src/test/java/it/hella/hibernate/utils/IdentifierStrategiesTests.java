@@ -20,20 +20,19 @@ import it.hella.model.IdentityIdentifiedBean;
 import it.hella.model.SequenceIdentifiedBean;
 import it.hella.model.ThreadedBean;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class IdentifierStrategiesTests.
  */
 public class IdentifierStrategiesTests extends BaseTests {
 
 	/** The number of insert operations per thread. */
-	private static final int BEAN_NUMBER_PER_THREAD = 1000;
+	private static int BEAN_NUMBER_PER_THREAD = 1000;
 
 	/** The numbe of threads. */
-	private static final int THREAD_NUMBER = 50;
+	private static int THREAD_NUMBER = 50;
 
 	/** The maximum number of insert operations before session flush. */
-	private static final int BATCH_CASH_SIZE = 50;
+	private static int BATCH_CASH_SIZE = 50;
 
 	/**
 	 * A reentrant lock that guards the timing evaluation code section. To avoid

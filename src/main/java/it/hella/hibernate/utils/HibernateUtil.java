@@ -78,7 +78,7 @@ public class HibernateUtil {
 	 */
 	private static void initFactory(Optional<Interceptor> interceptor) {
 
-		if (sessionFactory != null) {
+		if (sessionFactory == null) {
 			synchronized (HibernateUtil.class) {
 				if (sessionFactory == null) {
 					try {
