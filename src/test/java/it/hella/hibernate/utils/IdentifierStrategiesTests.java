@@ -112,7 +112,7 @@ public class IdentifierStrategiesTests extends BaseTests {
 	 *            the id of the thread
 	 * @param clazz
 	 *            the ThreadedBean implementation
-	 * @return the list of primary key values inserted
+	 * @return the list of primary keys values inserted
 	 * @throws Exception
 	 *             the exception
 	 */
