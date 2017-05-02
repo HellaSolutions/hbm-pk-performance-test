@@ -43,7 +43,7 @@ public class IdentifierStrategiesTests extends BaseTests {
 	private static final ReentrantLock lock = new ReentrantLock();
 
 	/**
-	 * Sequence insert.
+	 * Sequence identified bean insert test.
 	 *
 	 * @throws Exception
 	 *             any exception
@@ -54,7 +54,7 @@ public class IdentifierStrategiesTests extends BaseTests {
 	}
 
 	/**
-	 * Identity insert.
+	 * Identity identified bean insert test.
 	 *
 	 * @throws Exception
 	 *             any exception
@@ -65,7 +65,7 @@ public class IdentifierStrategiesTests extends BaseTests {
 	}
 
 	/**
-	 * Hi lo insert.
+	 * Hi lo identified bean insert test.
 	 *
 	 * @throws Exception
 	 *             any exception
@@ -76,7 +76,8 @@ public class IdentifierStrategiesTests extends BaseTests {
 	}
 
 	/**
-	 * Creates the and save bean.
+	 * Creates and saves a bean instance. Uses a stopwatch to add a delta to the
+	 * timings maps
 	 *
 	 * @param threadId
 	 *            the id of the thread
@@ -104,7 +105,9 @@ public class IdentifierStrategiesTests extends BaseTests {
 	}
 
 	/**
-	 * Thread transaction.
+	 * The thread callable body.
+	 * 
+	 * Executes a transaction that inserts BEAN_NUMBER_PER_THREAD beans
 	 *
 	 * @param threadId
 	 *            the id of the thread
@@ -135,13 +138,15 @@ public class IdentifierStrategiesTests extends BaseTests {
 	}
 
 	/**
-	 * Multithreaded insert.
+	 * Prepares THREAD_NUMBER threads for execution
 	 *
 	 * @param clazz
 	 *            the ThreadedBean implementation
 	 * @return the list of primary key values inserted per Future
 	 * @throws Exception
 	 *             any exception
+	 * 
+	 * @see IdentifierStrategiesTests#threadTransaction
 	 */
 	public List<Future<List<Long>>> multithreadedInsert(Class<? extends ThreadedBean> clazz) throws Exception {
 
