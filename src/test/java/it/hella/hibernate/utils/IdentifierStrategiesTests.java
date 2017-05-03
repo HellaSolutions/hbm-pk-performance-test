@@ -36,7 +36,7 @@ public class IdentifierStrategiesTests extends BaseTests {
 
 	/**
 	 * A reentrant lock that guards the timing evaluation code section. To avoid
-	 * noise due to multithreading interrupts.
+	 * timing bias due to multithreading interrupts.
 	 * 
 	 * @see IdentifierStrategiesTests#createAndSaveBean
 	 */
@@ -141,7 +141,7 @@ public class IdentifierStrategiesTests extends BaseTests {
 	 *
 	 * @param clazz
 	 *            the ThreadedBean implementation
-	 * @return the list of primary key values inserted per Future
+	 * @return the lists of primary keys inserted for each Future
 	 * @throws Exception
 	 *             any exception
 	 * 
