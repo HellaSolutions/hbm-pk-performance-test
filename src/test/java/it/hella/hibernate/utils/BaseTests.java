@@ -24,7 +24,7 @@ import it.hella.model.ThreadedBean;
 public class BaseTests {
 
 	/** The logger. */
-	private static Logger logger = LogManager.getLogger();
+	protected static Logger logger = LogManager.getLogger();
 
 	/** The session factory. */
 	protected static SessionFactory sessionFactory;

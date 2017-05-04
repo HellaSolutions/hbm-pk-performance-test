@@ -6,14 +6,18 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import it.hella.model.HiLoIdentifiedBean;
 import it.hella.model.IdentityIdentifiedBean;
@@ -25,11 +29,14 @@ import it.hella.model.ThreadedBean;
  */
 public class IdentifierStrategiesTests extends BaseTests {
 
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+
 	/** The number of insert operations per thread. */
-	private static int BEAN_NUMBER_PER_THREAD = 1000;
+	private static int BEAN_NUMBER_PER_THREAD = 100;
 
 	/** The numbe of threads. */
-	private static int THREAD_NUMBER = 50;
+	private static int THREAD_NUMBER = 10;
 
 	/** The maximum number of insert operations before session flush. */
 	private static int BATCH_CASH_SIZE = 50;
@@ -91,6 +98,7 @@ public class IdentifierStrategiesTests extends BaseTests {
 
 		ThreadedBean idBean1 = clazz.newInstance();
 		idBean1.setThreadNumber(threadId);
+		Long k = 0L;
 		lock.lock();
 		try {
 			Stopwatch stopwatch = Stopwatch.createStarted();
@@ -154,7 +162,9 @@ public class IdentifierStrategiesTests extends BaseTests {
 			final int threadId = new Integer(i);
 			tasks.add(() -> threadTransaction(threadId, clazz));
 		}
-		final ExecutorService executorService = Executors.newFixedThreadPool(THREAD_NUMBER);
+		final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("Batch-%d").setDaemon(true)
+				.build();
+		final ExecutorService executorService = Executors.newFixedThreadPool(THREAD_NUMBER, threadFactory);
 		return executorService.invokeAll(tasks);
 
 	}
