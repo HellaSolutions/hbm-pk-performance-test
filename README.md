@@ -8,6 +8,10 @@ and the Hibernate property hibernate.batch_size. The two constants represents, r
 Sample output: database MySQL, BEAN_NUMBER_PER_THREAD = 1000, THREAD_NUMBER = 50
 
 [INFO ] 2017-05-05 15:15:51.673 [main] BaseTests - it.hella.model.IdentityIdentifiedBean total time > 1158 milliseconds
+
 [INFO ] 2017-05-05 15:15:51.674 [main] BaseTests - it.hella.model.SequenceIdentifiedBean total time > 334 milliseconds
+
 [INFO ] 2017-05-05 15:15:51.674 [main] BaseTests - it.hella.model.HiLoIdentifiedBean total time > 182 milliseconds
+
+**Timings refers to the overall time needed by the Hibernate save operations, not to the time between the start and the end of the transactions**
 
