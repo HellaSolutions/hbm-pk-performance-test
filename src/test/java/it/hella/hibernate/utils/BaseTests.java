@@ -55,6 +55,9 @@ public class BaseTests {
 
 	/**
 	 * Adds the time elapsed while executing a traced ThreadedBean operation
+	 * 
+	 * synchronized keyword is not strictly necessary here as the default
+	 * implementation calls this method in a region guarded by a reentrant lock.
 	 *
 	 * @param clazz
 	 *            the ThreadedBean implementation
