@@ -27,11 +27,13 @@ import it.hella.model.IdentityIdentifiedBean;
 import it.hella.model.SequenceIdentifiedBean;
 import it.hella.model.ThreadedBean;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class IdentifierStrategiesTests.
  */
 public class IdentifierStrategiesTests extends BaseTests {
 
+	/** The thrown. */
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
@@ -52,8 +54,12 @@ public class IdentifierStrategiesTests extends BaseTests {
 	 */
 	private static final ReentrantLock lock = new ReentrantLock();
 
+	/** The executor service. */
 	ExecutorService executorService;
 
+	/**
+	 * Before.
+	 */
 	@Before
 	public void before() {
 		final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("Batch-%d").setDaemon(true)
@@ -163,14 +169,13 @@ public class IdentifierStrategiesTests extends BaseTests {
 	}
 
 	/**
-	 * Prepares THREAD_NUMBER threads for execution
+	 * Prepares THREAD_NUMBER threads for execution.
 	 *
 	 * @param clazz
 	 *            the ThreadedBean implementation
 	 * @return the lists of primary keys inserted for each Future
 	 * @throws Exception
 	 *             any exception
-	 * 
 	 * @see IdentifierStrategiesTests#threadTransaction
 	 */
 	public List<Future<List<Long>>> multithreadedInsert(Class<? extends ThreadedBean> clazz) throws Exception {
@@ -184,6 +189,17 @@ public class IdentifierStrategiesTests extends BaseTests {
 
 	}
 
+	/**
+	 * Traces thread execution.
+	 * 
+	 * Traces exception occurrences during features executions.
+	 * 
+	 * In case of abnormal termination of a single feature logs the cause,
+	 * shutdowns immediately the thread pool and call the JUnit function fail.
+	 *
+	 * @param features
+	 *            the features returned by ExecutorService
+	 */
 	private void traceThreadExecution(List<Future<List<Long>>> features) {
 		features.parallelStream().forEach(f -> {
 			try {
