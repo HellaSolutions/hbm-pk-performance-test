@@ -6,10 +6,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * The Class IdentityIdentifiedBean.
  */
 @Entity(name = "IdentityTable")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class IdentityIdentifiedBean implements ThreadedBean {
 
 	/** The id. */

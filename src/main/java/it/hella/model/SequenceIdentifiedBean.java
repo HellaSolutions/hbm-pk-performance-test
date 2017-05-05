@@ -8,10 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * The Class SequenceIdentifiedBean.
  */
 @Entity(name = "SequenceTable")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SequenceIdentifiedBean implements ThreadedBean {
 
 	/** The id. */

@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -12,6 +13,7 @@ import org.hibernate.annotations.Parameter;
  * The Class HiLoIdentifiedBean.
  */
 @Entity(name = "HiloTable")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class HiLoIdentifiedBean implements ThreadedBean {
 
 	/** The id. */

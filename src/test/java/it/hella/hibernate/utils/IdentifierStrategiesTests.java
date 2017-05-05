@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -148,7 +149,7 @@ public class IdentifierStrategiesTests extends BaseTests {
 		Transaction tx = session.beginTransaction();
 		List<Long> ret = new ArrayList<Long>();
 		try {
-			for (int i = 0; i < BEAN_NUMBER_PER_THREAD; i++) {
+			for (int i = 1; i <= BEAN_NUMBER_PER_THREAD; i++) {
 				ret.add(createAndSaveBean(threadId, clazz));
 				if (i % BATCH_CASH_SIZE == 0) {
 					session.flush();
@@ -159,6 +160,7 @@ public class IdentifierStrategiesTests extends BaseTests {
 			session.clear();
 			tx.commit();
 		} catch (Exception e) {
+			logger.error("thread #" + threadId + " in error > ", e);
 			tx.rollback();
 			throw e;
 		} finally {
@@ -201,16 +203,16 @@ public class IdentifierStrategiesTests extends BaseTests {
 	 *            the features returned by ExecutorService
 	 */
 	private void traceThreadExecution(List<Future<List<Long>>> features) {
-		features.parallelStream().forEach(f -> {
+		Optional<Future<List<Long>>> featureInError = features.stream().filter(f -> {
 			try {
 				f.get();
+				return false;
 			} catch (Exception e) {
 				Throwable ex = e.getCause() != null ? e.getCause() : e;
-				logger.error(ex);
-				executorService.shutdownNow();
 				fail("Thread error > " + ex.getClass() + ", " + ex.getMessage());
+				return true;
 			}
-		});
+		}).findFirst();
 	}
 
 }
