@@ -2,6 +2,7 @@ package it.hella.hibernate.utils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,7 +48,8 @@ public class BaseTests {
 	public static void afterClass() {
 		HibernateUtil.shutdown();
 		timings.forEach((key, value) -> {
-			logger.info(key.getCanonicalName() + " total time > " + Math.round(value / 10E6) + " milliseconds");
+			logger.info(key.getCanonicalName() + " total time > "
+					+ TimeUnit.MILLISECONDS.convert(value, TimeUnit.NANOSECONDS) + " milliseconds");
 		});
 	}
 

@@ -1,5 +1,7 @@
 package it.hella.hibernate.utils;
 
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -12,6 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -33,10 +36,10 @@ public class IdentifierStrategiesTests extends BaseTests {
 	public ExpectedException thrown = ExpectedException.none();
 
 	/** The number of insert operations per thread. */
-	private static int BEAN_NUMBER_PER_THREAD = 100;
+	private static int BEAN_NUMBER_PER_THREAD = 1000;
 
 	/** The numbe of threads. */
-	private static int THREAD_NUMBER = 10;
+	private static int THREAD_NUMBER = 50;
 
 	/** The maximum number of insert operations before session flush. */
 	private static int BATCH_CASH_SIZE = 50;
@@ -49,6 +52,15 @@ public class IdentifierStrategiesTests extends BaseTests {
 	 */
 	private static final ReentrantLock lock = new ReentrantLock();
 
+	ExecutorService executorService;
+
+	@Before
+	public void before() {
+		final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("Batch-%d").setDaemon(true)
+				.build();
+		executorService = Executors.newFixedThreadPool(THREAD_NUMBER, threadFactory);
+	}
+
 	/**
 	 * Sequence identified bean insert test.
 	 *
@@ -57,7 +69,7 @@ public class IdentifierStrategiesTests extends BaseTests {
 	 */
 	@Test
 	public void sequenceInsert() throws Exception {
-		multithreadedInsert(SequenceIdentifiedBean.class);
+		traceThreadExecution(multithreadedInsert(SequenceIdentifiedBean.class));
 	}
 
 	/**
@@ -68,7 +80,7 @@ public class IdentifierStrategiesTests extends BaseTests {
 	 */
 	@Test
 	public void identityInsert() throws Exception {
-		multithreadedInsert(IdentityIdentifiedBean.class);
+		traceThreadExecution(multithreadedInsert(IdentityIdentifiedBean.class));
 	}
 
 	/**
@@ -79,7 +91,7 @@ public class IdentifierStrategiesTests extends BaseTests {
 	 */
 	@Test
 	public void HiLoInsert() throws Exception {
-		multithreadedInsert(HiLoIdentifiedBean.class);
+		traceThreadExecution(multithreadedInsert(HiLoIdentifiedBean.class));
 	}
 
 	/**
@@ -129,17 +141,23 @@ public class IdentifierStrategiesTests extends BaseTests {
 		Session session = sessionFactory.getCurrentSession();
 		Transaction tx = session.beginTransaction();
 		List<Long> ret = new ArrayList<Long>();
-		for (int i = 0; i < BEAN_NUMBER_PER_THREAD; i++) {
-			ret.add(createAndSaveBean(threadId, clazz));
-			if (i % BATCH_CASH_SIZE == 0) {
-				session.flush();
-				session.clear();
+		try {
+			for (int i = 0; i < BEAN_NUMBER_PER_THREAD; i++) {
+				ret.add(createAndSaveBean(threadId, clazz));
+				if (i % BATCH_CASH_SIZE == 0) {
+					session.flush();
+					session.clear();
+				}
 			}
+			session.flush();
+			session.clear();
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			throw e;
+		} finally {
+			session.close();
 		}
-		session.flush();
-		session.clear();
-		tx.commit();
-		session.close();
 		return ret;
 
 	}
@@ -162,11 +180,21 @@ public class IdentifierStrategiesTests extends BaseTests {
 			final int threadId = new Integer(i);
 			tasks.add(() -> threadTransaction(threadId, clazz));
 		}
-		final ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("Batch-%d").setDaemon(true)
-				.build();
-		final ExecutorService executorService = Executors.newFixedThreadPool(THREAD_NUMBER, threadFactory);
 		return executorService.invokeAll(tasks);
 
+	}
+
+	private void traceThreadExecution(List<Future<List<Long>>> features) {
+		features.parallelStream().forEach(f -> {
+			try {
+				f.get();
+			} catch (Exception e) {
+				Throwable ex = e.getCause() != null ? e.getCause() : e;
+				logger.error(ex);
+				executorService.shutdownNow();
+				fail("Thread error > " + ex.getClass() + ", " + ex.getMessage());
+			}
+		});
 	}
 
 }
