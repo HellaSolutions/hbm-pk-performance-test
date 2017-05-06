@@ -16,9 +16,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -33,10 +31,6 @@ import it.hella.model.ThreadedBean;
  * The Class IdentifierStrategiesTests.
  */
 public class IdentifierStrategiesTests extends BaseTests {
-
-	/** The thrown. */
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
 
 	/** The number of insert operations per thread. */
 	private static int BEAN_NUMBER_PER_THREAD = 1000;
